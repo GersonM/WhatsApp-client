@@ -5,7 +5,6 @@ function Chat()
 	this.messages = [];
 	this.chatAvatar = '';
 }
-
 function Person(_name, _avatar)
 {
 	this.name = _name;
@@ -23,7 +22,26 @@ function Whatsapp()
 	this.selectedChat = null;
 	this.searchChat		= function(_keyword){};
 	this.getChatFromId	= function(_chatId){};
-	this.drawChatList	= function(_htmlTarget){};
+	this.drawChatList	= function(_htmlTarget){
+		var ulChatList = document.getElementById('chat-list');
+
+		for (var i in this.chats) {
+			console.log(this.chats[i].messages);
+			var htmlChatList = '<li><div class="avatar">' +
+					'<img src="' + this.chats[i].chatAvatar + '" alt="" class="wh-44">' +
+					'<h4 class="w-contact-name">' + this.chats[i].nombre +'</h4>' +
+					'<p class="w-last-message">' + this.chats[i].messages[this.chats[i].messages.length-1].message + '</p>' +
+				'</div>' +
+				'<div class="time">03/01/2016</div>' +
+			'</li>';
+			ulChatList.innerHTML += htmlChatList;
+		}
+
+
+
+
+
+	};
 	this.drawMessageList= function(){
 		var divChat = document.getElementById('chat');
 		divChat.innerHTML = '';
@@ -65,17 +83,36 @@ var wapp = new Whatsapp();
 
 var me = new Person('Gerson');
 var zare = new Person('Zare');
+var liset = new Person('Liset');
 
 var chat = new Chat();
-
+chat.nombre = "Chat";
 chat.people.push(zare);
+chat.chatAvatar = 'https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png';
 
 wapp.chats.push(chat);
+
+
+var chat2 = new Chat();
+chat2.nombre = "Liset";
+chat2.chatAvatar = 'https://upload.wikimedia.org/wikipedia/en/5/55/Xbox_NXE_avatar.png';
+chat2.people.push(liset);
+
+wapp.chats.push(chat2);
+
 wapp.selectedChat = chat;
 
 wapp.sendMessage(new Message('Hola', zare));
 wapp.sendMessage(new Message('Que tal?', me));
+wapp.sendMessage(new Message('Yo muy bien, tu que tal?', zare));
 
+
+wapp.selectedChat = chat2;
+
+wapp.sendMessage(new Message('Hola', me));
+wapp.sendMessage(new Message('Tienes un peine?', liset));
+
+wapp.drawChatList();
 console.log(wapp.getLastMessage().sender);
 
 
